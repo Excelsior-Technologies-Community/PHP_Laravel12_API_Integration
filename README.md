@@ -11,10 +11,19 @@ happen before and after running the `php artisan install:api` command.
 Laravel 12 provides a clean structure for building APIs.  
 Initially, Laravel does **not** include API authentication or API scaffolding.
 
-The command:
+That means:
 
+- No routes/api.php  
+- No token authentication  
+- No Sanctum  
+- No migrations for API tokens  
+- No API middleware group  
+- No API controllers  
+
+To enable API development, Laravel provides the command:
+```
 php artisan install:api
-
+```
 
 automatically enables **API mode** with:
 
@@ -27,11 +36,12 @@ automatically enables **API mode** with:
 ## 🛠️ 2. Project Setup
 
 ### Step 1 — Create Laravel 12 Project
+```
 
 composer create-project laravel/laravel:^12.0 laravel12-api-integration
 cd laravel12-api-integration
 
-
+```
 At this stage:
 
 - No `api.php` routes file exists  
@@ -43,10 +53,10 @@ At this stage:
 ## 🔧 3. Enable API Mode
 
 Run:
-
+```
 php artisan install:api
 
-
+```
 ### ✔ Before running the command  
 - `routes/api.php` → **does NOT exist**  
 - No API middleware  
@@ -76,8 +86,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+```
 🧪 5. Add a Test API Route
 To confirm the API is working, add this to routes/api.php:
+```
 
 Route::get('/test', function () {
     return response()->json(['message' => 'API working!']);
