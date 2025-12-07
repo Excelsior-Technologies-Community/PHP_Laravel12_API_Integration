@@ -312,7 +312,7 @@ You should see:
 
 php artisan serve
 
-
+```
 🎉 Your Laravel12-api-integration is Ready!
 
 You can now start integrating external APIs or creating your own API endpoints.
