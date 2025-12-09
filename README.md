@@ -53,7 +53,7 @@ This is the MOST IMPORTANT PART you asked for.
 
 A fresh Laravel 12 project looks like this:
 
-laravel12-api-integration/
+PHP_Laravel12_API_Integration/
 │
 ├── app/
 │   └── Http/
