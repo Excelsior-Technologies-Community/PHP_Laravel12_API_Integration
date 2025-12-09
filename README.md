@@ -1,4 +1,4 @@
-# laravel12-api-integration
+# PHP_Laravel12_API_Integration
 
 A simple Laravel 12 project demonstrating how API mode works, including
 project setup, enabling API features, and understanding what changes
@@ -39,8 +39,8 @@ automatically enables **API mode** with:
 2.1 Create Laravel 12 Project
 
 ```
-composer create-project laravel/laravel:^12.0 laravel12-api-integration
-cd laravel12-api-integration
+composer create-project laravel/laravel:^12.0 PHP_Laravel12_API_Integration
+cd PHP_Laravel12_API_Integration
 ```
 
 ✔ Creates a fresh Laravel 12 project
@@ -313,6 +313,6 @@ You should see:
 php artisan serve
 
 ```
-🎉 Your Laravel12-api-integration is Ready!
+🎉 Your PHP_Laravel12_API_Integration is Ready!
 
 You can now start integrating external APIs or creating your own API endpoints.
