@@ -34,7 +34,7 @@ automatically enables **API mode** with:
 
 ---
 
-2. Project Setup
+## 2. Project Setup
 
 2.1 Create Laravel 12 Project
 
@@ -47,7 +47,7 @@ Creates a fresh Laravel 12 project
  
 cd moves inside the project folder
  
-3. BEFORE running php artisan install:api
+## 3. BEFORE running php artisan install:api
 
 This is the MOST IMPORTANT PART you asked for.
 
@@ -111,7 +111,7 @@ X API controllers
 Laravel 12 is clean & empty before enabling API mode.
 
 
-4. Install API System
+## 4. Install API System
 
 Run:
 ```
@@ -120,7 +120,7 @@ php artisan install:api
 ```
 This command activates the full API environment.
 
-5. AFTER running php artisan install:api
+## 5. AFTER running php artisan install:api
 
 The command makes several important changes.
 
@@ -262,7 +262,7 @@ After install — routing is activated:
 ```
 - Laravel begins loading API routes automatically.
 
-6. FINAL Structure AFTER php artisan install:api
+## 6. FINAL Structure AFTER php artisan install:api
 ```
 
 laravel12-api-integration/
@@ -288,7 +288,7 @@ laravel12-api-integration/
     └── app.php                       ← Now loads API routes
 ```
 
-7. Add a Test API Route
+## 7. Add a Test API Route
 
 To confirm the API is working, add this to routes/api.php:
 ```
@@ -298,7 +298,7 @@ Route::get('/test', function () {
 
 ```
 
-8. Run the Project:
+## 8. Run the Project:
    
 ```
 php artisan serve
