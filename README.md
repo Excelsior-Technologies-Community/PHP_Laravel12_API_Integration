@@ -43,9 +43,10 @@ composer create-project laravel/laravel:^12.0 PHP_Laravel12_API_Integration
 cd PHP_Laravel12_API_Integration
 ```
 
-✔ Creates a fresh Laravel 12 project
-✔ cd moves inside the project folder
-
+Creates a fresh Laravel 12 project
+ 
+cd moves inside the project folder
+ 
 3. BEFORE running php artisan install:api
 
 This is the MOST IMPORTANT PART you asked for.
@@ -72,9 +73,9 @@ PHP_Laravel12_API_Integration/
     └── app.php
 
 ```
-🔥 Before install:api — What exists?
+Before install:api — What exists?
 
-✔ Exists:
+Exists:
 
 routes/web.php
 
@@ -92,19 +93,19 @@ abstract class Controller
 }
 ```
 
-❌ Does NOT Exist:
+X Does NOT Exist:
 
-❌ routes/api.php
+X routes/api.php
 
-❌ Sanctum
+X Sanctum
 
-❌ API middleware
+X API middleware
 
-❌ Token authentication
+X Token authentication
 
-❌ personal_access_tokens table
+X personal_access_tokens table
 
-❌ API controllers
+X API controllers
 
 
 Laravel 12 is clean & empty before enabling API mode.
@@ -259,7 +260,7 @@ After install — routing is activated:
 )
 
 ```
-✔ Laravel begins loading API routes automatically.
+- Laravel begins loading API routes automatically.
 
 6. FINAL Structure AFTER php artisan install:api
 ```
@@ -333,7 +334,7 @@ You should see:
 ```
 ---
 
-# Output
+# Output:
 ---
 
 Test in Postman:
