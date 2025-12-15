@@ -1,66 +1,364 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PHP_Laravel12_API_Integration
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A simple Laravel 12 project demonstrating how API mode works, including
+project setup, enabling API features, and understanding what changes
+happen before and after running the `php artisan install:api` command.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 1. Introduction
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Laravel 12 provides a clean structure for building APIs.  
+Initially, Laravel does **not** include API authentication or API scaffolding.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+That means:
 
-## Learning Laravel
+- No routes/api.php  
+- No token authentication  
+- No Sanctum  
+- No migrations for API tokens  
+- No API middleware group  
+- No API controllers  
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+To enable API development, Laravel provides the command:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```
+php artisan install:api
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+automatically enables **API mode** with:
 
-## Laravel Sponsors
+- API routing support  
+- Laravel Sanctum for token authentication  
+- Basic middleware setup  
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 2. Project Setup
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+2.1 Create Laravel 12 Project
 
-## Contributing
+```
+composer create-project laravel/laravel:^12.0 PHP_Laravel12_API_Integration
+cd PHP_Laravel12_API_Integration
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Creates a fresh Laravel 12 project
+ 
+cd moves inside the project folder
+ 
+## 3. BEFORE running php artisan install:api
 
-## Code of Conduct
+This is the MOST IMPORTANT PART you asked for.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+A fresh Laravel 12 project looks like this:
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+PHP_Laravel12_API_Integration/
+│
+├── app/
+│   └── Http/
+│       └── Controllers/
+│           └── Controller.php     ← Only one controller (base)
+│
+├── routes/
+│   ├── web.php                    ← Exists by default
+│   └── console.php                ← Exists by default
+│   ( NO api.php here )            ← VERY IMPORTANT
+│
+├── config/
+├── database/
+└── bootstrap/
+    └── app.php
 
-## License
+```
+Before install:api — What exists?
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Exists:
+
+routes/web.php
+
+routes/console.php
+
+Base controller:
+```
+
+<?php
+namespace App\Http\Controllers;
+
+abstract class Controller
+{
+    // Base controller
+}
+```
+
+X Does NOT Exist:
+
+X routes/api.php
+
+X Sanctum
+
+X API middleware
+
+X Token authentication
+
+X personal_access_tokens table
+
+X API controllers
+
+
+Laravel 12 is clean & empty before enabling API mode.
+
+
+## 4. Install API System
+
+Run:
+```
+php artisan install:api
+
+```
+This command activates the full API environment.
+
+
+## 5. AFTER running php artisan install:api
+
+
+The command makes several important changes.
+
+
+**5.1 NEW FILE CREATED — routes/api.php**
+
+Location:
+
+routes/api.php
+
+Content:
+```
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+// Protected API route - requires token authentication
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();   // Returns authenticated user as JSON
+});
+
+```
+Explanation:
+
+This file did NOT exist before running install:api.
+This is now the main API routing file.
+Every API route is written here.
+
+---
+
+**5.2 Migration Added for Tokens**
+
+Location:
+database/migrations/xxxx_xx_xx_create_personal_access_tokens_table.php
+
+```
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('personal_access_tokens', function (Blueprint $table) {
+            $table->id();
+            $table->morphs('tokenable');
+            $table->text('name');
+            $table->string('token', 64)->unique();
+            $table->text('abilities')->nullable();
+            $table->timestamp('last_used_at')->nullable();
+            $table->timestamp('expires_at')->nullable()->index();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('personal_access_tokens');
+    }
+};
+```
+**Purpose:**
+
+Stores API tokens generated by users (Sanctum)
+
+Required for:
+
+Mobile app login
+
+Postman API login
+
+SPA authentication
+
+Token-based external API
+
+---
+
+**5.3 Sanctum Installed**
+
+The package:
+
+laravel/sanctum
+
+is automatically installed.
+
+Sanctum provides:
+
+Token authentication
+
+Hashed tokens
+
+API guards
+
+SPA authentication support
+
+---
+
+**5.4 API Middleware Added**
+
+In app/Http/Kernel.php, new group added:
+```
+'api' => [
+    \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+    'throttle:api',
+    \Illuminate\Routing\Middleware\SubstituteBindings::class,
+],
+
+```
+Meaning:
+
+API requests are now protected
+
+Rate limiting enabled
+
+Token authentication works
+
+---
+
+**5.5 NEW Config File Added**
+
+Location:
+config/sanctum.php
+
+Used to customize API token behavior (expiry, hashing, SPA domain).
+
+---
+
+**5.6 bootstrap/app.php now loads API routes**
+
+Before install — API routes were not enabled.
+After install — routing is activated:
+```
+->withRouting(
+    web: __DIR__.'/../routes/web.php',
+    api: __DIR__.'/../routes/api.php',   // Enabled now
+    commands: __DIR__.'/../routes/console.php',
+    health: '/up',
+)
+
+```
+- Laravel begins loading API routes automatically.
+
+## 6. FINAL Structure AFTER php artisan install:api
+```
+
+laravel12-api-integration/
+│
+├── app/
+│   └── Http/
+│       └── Controllers/
+│           └── Controller.php
+│
+├── routes/
+│   ├── web.php
+│   ├── api.php                       ← Newly created
+│   └── console.php
+│
+├── config/
+│   └── sanctum.php                   ← Newly added
+│
+├── database/
+│   └── migrations/
+│       └── create_personal_access_tokens_table.php   ← Newly added
+│
+└── bootstrap/
+    └── app.php                       ← Now loads API routes
+```
+
+## 7. Add a Test API Route
+
+To confirm the API is working, add this to routes/api.php:
+```
+Route::get('/test', function () {
+    return response()->json(['message' => 'API working!']);
+});
+
+```
+
+## 8. Run the Project:
+   
+```
+php artisan serve
+```
+
+Now test in browser:
+```
+http://localhost:8000/api/test
+
+```
+You should see:
+```
+
+{
+  "message": "API working!"
+}
+
+```
+Or
+
+Test in Postman:
+
+```
+GET http://localhost:8000/api/test
+```
+
+You should see:
+
+```
+{
+  "message": "API working!"
+}
+```
+---
+
+# Output:
+---
+
+Test in Postman:
+
+```
+GET http://localhost:8000/api/test
+```
+<img width="1388" height="978" alt="Screenshot 2025-12-13 102847" src="https://github.com/user-attachments/assets/31917926-1b84-4d7f-802d-6ce02b72f3d8" />
+
+---
+
+Your PHP_Laravel12_API_Integration is Ready!
+
+You can now start integrating external APIs or creating your own API endpoints.
