@@ -8,66 +8,107 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    // List all products with search & pagination
     public function index(Request $request)
     {
         $query = Product::query();
 
         if ($request->has('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('description', 'like', '%' . $request->search . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('description', 'like', '%' . $request->search . '%')
+                  ->orWhere('category', 'like', '%' . $request->search . '%')
+                  ->orWhere('sku', 'like', '%' . $request->search . '%');
+            });
         }
 
-        $products = $query->paginate(10);
+        if ($request->has('category')) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+
+        if ($request->has('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        if ($request->has('in_stock')) {
+            $query->where('stock', '>', 0);
+        }
+
+        $products = $query->orderBy('created_at', 'desc')->paginate(10);
 
         return response()->json($products);
     }
 
-    // Store new product
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'sku' => 'nullable|string|max:100|unique:products,sku',
+            'category' => 'nullable|string|max:100',
+            'image' => 'nullable|url|max:500',
+            'status' => 'required|in:active,inactive',
+            'features' => 'nullable|array',
+            'discount_price' => 'nullable|numeric|min:0|lte:price',
+            'min_order_qty' => 'nullable|integer|min:1',
         ]);
 
         $product = Product::create($request->all());
 
-        return response()->json(['message' => 'Product created', 'product' => $product], 201);
+        return response()->json(['message' => 'Product created successfully', 'product' => $product], 201);
     }
 
-    // Show single product
-    public function show($id)
+    public function show(Product $product)
     {
-        $product = Product::findOrFail($id);
         return response()->json($product);
     }
 
-    // Update product
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
-        $product = Product::findOrFail($id);
-
         $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
-            'price' => 'sometimes|required|numeric',
-            'stock' => 'sometimes|required|integer',
+            'price' => 'sometimes|required|numeric|min:0',
+            'stock' => 'sometimes|required|integer|min:0',
+            'sku' => 'nullable|string|max:100|unique:products,sku,' . $product->id,
+            'category' => 'nullable|string|max:100',
+            'image' => 'nullable|url|max:500',
+            'status' => 'sometimes|required|in:active,inactive',
+            'features' => 'nullable|array',
+            'discount_price' => 'nullable|numeric|min:0|lte:price',
+            'min_order_qty' => 'nullable|integer|min:1',
         ]);
 
         $product->update($request->all());
 
-        return response()->json(['message' => 'Product updated', 'product' => $product]);
+        return response()->json(['message' => 'Product updated successfully', 'product' => $product]);
     }
 
-    // Delete product
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        $product = Product::findOrFail($id);
         $product->delete();
 
-        return response()->json(['message' => 'Product deleted']);
+        return response()->json(['message' => 'Product deleted successfully']);
+    }
+
+    public function categories()
+    {
+        $categories = Product::select('category')
+            ->distinct()
+            ->whereNotNull('category')
+            ->where('category', '!=', '')
+            ->orderBy('category')
+            ->pluck('category');
+
+        return response()->json($categories);
     }
 }
