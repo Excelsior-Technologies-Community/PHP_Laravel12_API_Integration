@@ -12,5 +12,5 @@ Route::get('/test', function () {
     return response()->json(['message' => 'API working!']);
 });
 
-
+Route::get('/products/categories', [ProductController::class, 'categories']);
 Route::apiResource('products', ProductController::class);

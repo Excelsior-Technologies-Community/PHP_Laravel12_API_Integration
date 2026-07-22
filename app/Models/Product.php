@@ -14,5 +14,21 @@ class Product extends Model
         'description',
         'price',
         'stock',
+        'sku',
+        'category',
+        'image',
+        'status',
+        'features',
+        'discount_price',
+        'min_order_qty',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'price' => 'decimal:2',
+            'discount_price' => 'decimal:2',
+            'features' => 'array',
+        ];
+    }
 }
